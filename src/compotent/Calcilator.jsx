@@ -1,39 +1,51 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
-export default function Calculator () {
-    const [count, setcount] = useState(0)
+export default function Calculator() {
+    const [count, setCount] = useState("");
+    const [operation, setOperation] = useState("");
+    const mapNumberList = ["1","2","3","4","5","6","7","8","9","0"];
+    const calcList = ["-","+","*","%"];
 
-    const asd = (event) => {
-        let status = event.currentTarget.className
-        if(status === "plus"){
-            setcount(count + 1)
-        }else if(status === "minus"){
-            setcount(count - 1)
-        }else if(status === "five"){
-            setcount(count + 5)
-        }else{
-            setcount(count - 5)
-        }
-    }
+    const handleNumber = (number) => {
+        setCount(prev => prev + number)
+    };
+
+    const handleOperation = (cal) => {
+        setCount(prev => prev + cal)
+    };
+    const Eval = () => {
+        console.log(typeof count, count)
+        let answer = eval(count)
+        setCount(answer)
+    };
 
     const reset = () => {
-        setcount(0)
-    }
-    return(
+        setCount("");
+        setOperation("");
+    };
+
+    return (
         <div className="wrapper">
-            <span className="subtext">
-            grid,form,input,onclick,eval()을 이용해 간단한 계산기를 만들어 봤습니다.
-            </span>
             <div className="calculator">
                 <form name="forms">
-                    <input type="text" name="output" value={count} />
-                    <button type="button" className="plus" onClick={asd}>+</button>
-                    <button type="button" className="minus" onClick={asd}>-</button>
-                    <button type="button" className="five" onClick={asd}>+5</button>
-                    <button type="button" className="fiveminus" onClick={asd}>+5</button>
-                    <button type="button" className="reset" onClick={reset}>reset</button>
+                    <input type="text" name="output" value={count} readOnly />
+                    {mapNumberList.map((number) => (
+                        <button type="button" key={number} onClick={() => handleNumber(number)}>
+                            {number}
+                        </button>
+                    ))}
+                    {calcList.map((cal) => (
+                    <button type="button" onClick={() => handleOperation(cal)}>
+                        {cal}
+                    </button>))}                    
+                    <button type="button" className="equal" onClick={Eval}>
+                    =
+                    </button>
+                    <button type="button" className="reset" onClick={reset}>
+                        reset
+                    </button>
                 </form>
             </div>
         </div>
-    )
+    );
 }
